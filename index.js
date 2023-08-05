@@ -60,8 +60,32 @@ class Player {
       }
    }
 }
+class Projectile {
+   constructor({ position, velocity }) {
+      this.position = position
+      this.velocity = velocity
 
+      this.radius = 3
+   }
+
+   draw() {
+      c.beginPath()
+      c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+      c.fillStyle = 'red'
+      c.fill()
+      c.closePath()
+   }
+
+   update() {
+      this.draw()
+      this.position.x += this.velocity.x
+      this.position.y += this.velocity.y
+   }
+}
 const player = new Player()
+const projectile = [
+
+]
 // player.draw()
 const keys = {
    a: {
@@ -80,6 +104,18 @@ function animate() {
    c.fillStyle = 'black'
    c.fillRect(0, 0, canvas.width, canvas.height)
    player.update()
+
+   // For Projectile
+   projectile.forEach((projectile, index) => {
+      if (projectile.position.y + projectile.radius <= 0) {
+         setTimeout(() => {
+            projectile.splice(index, 1)
+         }, 0)
+      }
+      else {
+         projectile.update()
+      }
+   })
 
    if (keys.a.pressed && player.position.x >= 0) {
       player.velocity.x = -5
@@ -100,34 +136,45 @@ animate()
 addEventListener('keydown', ({ key }) => {
    switch (key) {
       case 'a':
-         console.log('left')
+         //console.log('left')
          keys.a.pressed = true
          break;
 
       case 'd':
-         console.log('right')
+         //console.log('right')
          keys.d.pressed = true
          break;
 
       case ' ':
-         console.log('space')
+         //console.log('space')
+         projectile.push(new Projectile({
+            position: {
+               x: player.position.x + player.width / 2, // comming from the center of the player
+               y: player.position.y
+            },
+            velocity: {
+               x: 0,
+               y: -10
+            }
+         }))
+         //console.log(projectile);
          break;
    }
 })
 addEventListener('keyup', ({ key }) => {
    switch (key) {
       case 'a':
-         console.log('left')
+         //console.log('left')
          keys.a.pressed = false
          break;
 
       case 'd':
-         console.log('right')
+         //console.log('right')
          keys.d.pressed = false
          break;
 
       case ' ':
-         console.log('space')
+         //console.log('space')
          break;
    }
 })
