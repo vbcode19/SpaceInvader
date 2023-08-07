@@ -106,14 +106,14 @@ function animate() {
    player.update()
 
    // For Projectile
-   projectile.forEach((projectile, index) => {
-      if (projectile.position.y + projectile.radius <= 0) {
+   projectile.forEach((proj, index) => { // Renamed from 'projectile' to 'proj'
+      if (proj.position.y + proj.radius <= 0) {
          setTimeout(() => {
-            projectile.splice(index, 1)
-         }, 0)
+            projectile.splice(index, 1); // Changed 'projectile' to 'proj'
+         }, 0);
       }
       else {
-         projectile.update()
+         proj.update(); // Changed 'projectile' to 'proj'
       }
    })
 
@@ -157,7 +157,7 @@ addEventListener('keydown', ({ key }) => {
                y: -10
             }
          }))
-         //console.log(projectile);
+         // console.log(projectile);
          break;
    }
 })
