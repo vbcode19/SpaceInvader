@@ -174,7 +174,7 @@ const projectile = [
 
 ]
 // player.draw()
-const grids = [new Grid()]
+const grids = []
 
 const keys = {
    a: {
@@ -187,6 +187,10 @@ const keys = {
       pressed: false,
    },
 }
+let frames = 0
+let randomInterval = Math.floor((Math.random() * 500) + 500)
+
+console.log(randomInterval)
 
 function animate() {
    requestAnimationFrame(animate)
@@ -207,7 +211,7 @@ function animate() {
       }
    })
 
-   grids.forEach(grid => {
+   grids.forEach((grid) => {
       grid.update()
       grid.invaders.forEach(invader => {
          invader.update({ velocity: grid.velocity })
@@ -215,17 +219,29 @@ function animate() {
    })
 
    if (keys.a.pressed && player.position.x >= 0) {
-      player.velocity.x = -5
+      player.velocity.x = -7
       player.rotation = -0.15
    }
    else if (keys.d.pressed && player.position.x + player.width <= canvas.width) {
-      player.velocity.x = 5
+      player.velocity.x = 7
       player.rotation = 0.15
    }
    else {
       player.velocity.x = 0;
       player.rotation = 0;
    }
+
+   console.log(frames)
+   // spawning enemies
+   // for new grid expansion
+   if (frames % randomInterval === 0) {
+      grids.push(new Grid())
+      randomInterval = Math.floor((Math.random() * 500) + 500)
+      frames=0
+      console.log(randomInterval);
+   }
+
+   frames++
 }
 
 animate()
